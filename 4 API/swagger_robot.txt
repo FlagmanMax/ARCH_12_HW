@@ -1,0 +1,266 @@
+openapi: 3.0.1
+info:
+  title: Робот-пылесос
+  version: 0.0.2
+servers:
+  - url: http://localhost:8080/api/version_01
+    description: Develop server
+paths:
+  /robots:
+    get:
+      summary: Метод получения списка Роботов
+      tags:
+        - Robots
+      operationId: getAllRobots
+      responses:
+        "200":
+          description: Успешный ответ со спиcком Пользователей
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robots"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод создания Робота
+      tags:
+        - Robots
+      operationId: createRobot
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot" 
+      responses:
+        "200":
+          description: Успешный ответ добавления нового робота
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"    
+  /robot/{idRobot}:
+    get:
+      summary: Метод получения информации о Роботе по id
+      tags:
+        - Robot
+      operationId: getRobotById
+      parameters:
+        - name: idRobot
+          in: path
+          required: true
+          description: id Robot
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешный ответ с информацией по Роботу
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Robot"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление робота по id
+      tags:
+        - Robot
+      operationId: deleteRobotById
+      parameters:
+        - name: idRobot
+          in: path
+          required: true
+          description: id Robot
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешное удаление робота по id
+          content:
+            adplication/json: {}
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /users:
+    get:
+      summary: Метод получения списка Пользователей
+      tags:
+        - Users
+      operationId: getAllUsers
+      responses:
+        "200":
+          description: Успешный ответ со спиcком Пользователей
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Users"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    post:
+      summary: Метод создания Пользователя
+      tags:
+        - Users
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User" 
+      responses:
+        "200":
+          description: Успешный ответ добавления нового Пользователя
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  /user/{idUser}:
+    get:
+      summary: Метод получения информации о Пользователе по id
+      tags:
+        - User
+      operationId: geUserById
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: id User
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешный ответ с информацией по Пользователю
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+    delete:
+      summary: Удаление Пользователя по id
+      tags:
+        - User
+      operationId: deleteUserById
+      parameters:
+        - name: idUser
+          in: path
+          required: true
+          description: id User
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Успешное удаление Пользователя по id
+          content:
+            adplication/json: {}
+        "default":
+          description: Всё остальное
+          content:
+            adplication/json:
+              schema:
+                $ref: "#/components/schemas/Error"              
+components:
+  schemas:
+    Robot:
+      type: object
+      required:
+        - id
+        - model
+        - version
+        - fabricNumber
+        - macAddress
+        - idGroupUser
+        - resource
+        - status
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: id робота
+        model:
+          type: string
+          example: AAA5000
+        version:
+          type: string
+          example: 1.0.0.0
+          description: Версия ПО
+        fabricNiumber:
+          type: string
+          example: 123
+        macAddress:
+          type: string
+        idGroupUser:
+          type: integer
+        resource:
+          type: integer
+          description: Пробег робота
+        status:
+          type: string
+          example: work
+    Robots:
+      type: array
+      items:
+        $ref: "#/components/schemas/Robot"
+    User:
+      type: object
+      required:
+       - id
+       - login
+       - hash
+       - email
+      properties:
+        id:
+          type: integer
+          example: 1
+        login:
+          type: string
+        hash:
+          type: string
+        email:
+          type: string
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+    Error:
+      type: object
+      required:
+        - errorMessage
+        - errorCode
+      properties:
+        errorMessage:
+          type: string
+        errorCode:
+          type: integer
+        
